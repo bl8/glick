@@ -25,7 +25,6 @@ write_pipe_thread (void *arg)
     /* Write until we block, on broken pipe, exit */
     res = write (keepalive_pipe[1], c, sizeof (c));
     if (res == -1) {
-      printf ("Shutting down fuse\n");
       kill (fuse_pid, SIGHUP);
       break;
     }
@@ -56,8 +55,6 @@ main (int argc, char *argv[])
   if (mkdtemp(mount_dir) == NULL) {
     exit (1);
   }
-
-  printf ("Using mount dir: %s\n", mount_dir);
 
   /* TODO: Verify if already existing and right, and check error when creating it */
   symlink("/proc/self/fd/1023", "/tmp/self_prefix");
