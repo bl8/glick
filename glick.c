@@ -59,19 +59,6 @@ main (int argc, char *argv[])
 
   printf ("Using mount dir: %s\n", mount_dir);
 
-  dir_fd = open (mount_dir, O_RDONLY);
-  if (dir_fd == -1) {
-    perror ("open dir error: ");
-    exit (1);
-  }
-  
-  res = dup2 (dir_fd, 1023);
-  if (res == -1) {
-    perror ("dup2 error: ");
-    exit (1);
-  }
-  close (dir_fd);
-
   /* TODO: Verify if already existing and right, and check error when creating it */
   symlink("/proc/self/fd/1023", "/tmp/self_prefix");
 
@@ -110,6 +97,20 @@ main (int argc, char *argv[])
 
     /* Pause until mounted */
     read (keepalive_pipe[0], &c, 1);
+
+
+    dir_fd = open (mount_dir, O_RDONLY);
+    if (dir_fd == -1) {
+      perror ("open dir error: ");
+      exit (1);
+    }
+    
+    res = dup2 (dir_fd, 1023);
+    if (res == -1) {
+      perror ("dup2 error: ");
+      exit (1);
+    }
+    close (dir_fd);
     
     strcpy (filename, mount_dir);
     strcat (filename, "/start");
