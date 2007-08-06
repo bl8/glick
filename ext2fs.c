@@ -253,9 +253,10 @@ static void op_release(fuse_req_t req, fuse_ino_t ino,
 		fuse_reply_err(req, EIO);
 }
 
-static int walk_dir(struct ext2_dir_entry *de, int   offset, int blocksize,
+static int walk_dir(struct ext2_dir_entry *de_1, int   offset, int blocksize,
 		    char *buf, void *priv_data)
 {
+	struct ext2_dir_entry_2 *de = (struct ext2_dir_entry_2 *)de_1;
 	struct dirbuf *b = priv_data;
 	char *s;
 
