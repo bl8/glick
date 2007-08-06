@@ -8,15 +8,15 @@
 #include <unistd.h>
 #include <pthread.h>
 
-extern int ext2_main(int argc, char *argv[]);
+extern int ext2_main(int argc, char *argv[], void (*mounted) (void));
 extern void ext2_quit(void);
 
-pid_t fuse_pid;
+static pid_t fuse_pid;
+static int keepalive_pipe[2];
 
 static void *
 write_pipe_thread (void *arg)
 {
-  int *keepalive_pipe = arg;
   char c[32];
   int res;
 
@@ -33,13 +33,22 @@ write_pipe_thread (void *arg)
   return NULL;
 }
 
+void
+fuse_mounted (void)
+{
+    pthread_t thread;
+    int res;
+
+    fuse_pid = getpid();
+    res = pthread_create(&thread, NULL, write_pipe_thread, keepalive_pipe);
+}
+
 int
 main (int argc, char *argv[])
 {
   int dir_fd, res;
   char mount_dir[] = "/tmp/glick_XXXXXX";
   char filename[100]; /* enought for mount_dir + "/start" */
-  int keepalive_pipe[2];
   pid_t pid;
   char **real_argv;
   int i;
@@ -78,34 +87,31 @@ main (int argc, char *argv[])
   }
   
   if (pid == 0) {
-    char *child_argv[5];
-    pthread_t thread;
-    int res;
     /* in child */
+    
+    char *child_argv[5];
 
     /* close read pipe */
     close (keepalive_pipe[0]);
-    signal (SIGPIPE, SIG_DFL);
 
-    fuse_pid = getpid();
-    res = pthread_create(&thread, NULL, write_pipe_thread, keepalive_pipe);
-    printf ("pthread_create: %d\n", res);
-    
     child_argv[0] = "glick";
     child_argv[1] = mount_dir;
     child_argv[2] = "-o";
     child_argv[3] = "ro";
     child_argv[4] = NULL;
     
-    ext2_main (4, child_argv);
+    ext2_main (4, child_argv, fuse_mounted);
   } else {
     /* in parent, child is $pid */
+    int c;
 
     /* close write pipe */
     close (keepalive_pipe[1]);
 
-    /* TODO: Wait for mount */
-    sleep (200);
+    /* Pause until mounted */
+    read (keepalive_pipe[0], &c, 1);
+    
+    //sleep (200);
     
     strcpy (filename, mount_dir);
     strcat (filename, "/start");
