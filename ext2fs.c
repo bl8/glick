@@ -152,6 +152,49 @@ static void op_getattr(fuse_req_t req, fuse_ino_t ino,
 	fuse_reply_attr(req, &st, 2.0);
 }
 
+static void op_readlink (fuse_req_t req, fuse_ino_t ino)
+{
+	errcode_t rc;
+	struct ext2_inode inode;
+	char *buffer;
+	errcode_t retval;
+	char *link;
+	
+	fixup_inode (&ino);
+	
+	rc = ext2fs_read_inode(ep.fs, ino, &inode);
+	if (rc) {
+		fuse_reply_err(req, EIO);
+		return;
+	}
+	if (!LINUX_S_ISLNK (inode.i_mode)) {
+		fuse_reply_err(req, EINVAL);
+		return;
+	}
+
+	link = NULL;
+	buffer = NULL;
+	if (ext2fs_inode_data_blocks (ep.fs, &inode)) {
+		retval = ext2fs_get_mem (ep.fs->blocksize, &buffer);
+		if (retval == 0) {
+			retval = io_channel_read_blk (ep.fs->io, inode.i_block[0], 1, buffer);
+			if (retval == 0)
+				link = buffer;
+		}
+	} else {
+		link = (char *)&(inode.i_block[0]);
+	}
+
+	if (link)
+		fuse_reply_readlink(req, link);
+	else
+		fuse_reply_err(req, EIO);
+	
+	if (buffer)
+		ext2fs_free_mem(&buffer);
+}
+
+
 static void op_open(fuse_req_t req, fuse_ino_t ino, struct fuse_file_info *fi)
 {
 	errcode_t rc;
@@ -258,7 +301,7 @@ static struct fuse_lowlevel_ops ext2fs_ops = {
 	.forget		= NULL,
 	.getattr	= op_getattr,
 	.setattr	= NULL,
-	.readlink	= NULL,
+	.readlink	= op_readlink,
 	.mknod		= NULL,
 	.mkdir		= NULL,
 	.unlink		= NULL,
