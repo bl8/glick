@@ -1,2 +1,4 @@
 #!/bin/sh
-cat /var/self/data
+echo "arg is $1"
+echo "file data:"
+cat /tmp/self_prefix/data
