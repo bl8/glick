@@ -358,5 +358,7 @@ int ext2_main(int argc, char *argv[], void (*mounted) (void))
 	}
 	fuse_opt_free_args(&args);
 
+	rmdir (mountpoint);
+	
 	return err ? 1 : 0;
 }
