@@ -5,6 +5,9 @@ header.a: ext2fs.c mem_io_manager.c glick.c
 	rm -f header.a
 	ar r header.a ext2fs.o mem_io_manager.o glick.o
 
+clean:
+	rm header.a *.o test
+
 test:	header.a mkglick.sh
 	./mkglick.sh test.ext2 test
 
