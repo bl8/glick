@@ -3,11 +3,36 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <string.h>
 #include <unistd.h>
+#include <pthread.h>
 
 extern int ext2_main(int argc, char *argv[]);
-  
+extern void ext2_quit(void);
+
+pid_t fuse_pid;
+
+static void *
+write_pipe_thread (void *arg)
+{
+  int *keepalive_pipe = arg;
+  char c[32];
+  int res;
+
+  memset (c, 'x', sizeof (c));
+  while (1) {
+    /* Write until we block, on broken pipe, exit */
+    res = write (keepalive_pipe[1], c, sizeof (c));
+    if (res == -1) {
+      printf ("Shutting down fuse\n");
+      kill (fuse_pid, SIGHUP);
+      break;
+    }
+  }
+  return NULL;
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -54,25 +79,30 @@ main (int argc, char *argv[])
   
   if (pid == 0) {
     char *child_argv[5];
+    pthread_t thread;
+    int res;
     /* in child */
 
-    /* close write pipe */
-    close (keepalive_pipe[1]);
+    /* close read pipe */
+    close (keepalive_pipe[0]);
+    signal (SIGPIPE, SIG_DFL);
+
+    fuse_pid = getpid();
+    res = pthread_create(&thread, NULL, write_pipe_thread, keepalive_pipe);
+    printf ("pthread_create: %d\n", res);
     
     child_argv[0] = "glick";
     child_argv[1] = mount_dir;
     child_argv[2] = "-o";
     child_argv[3] = "ro";
     child_argv[4] = NULL;
-
-    /* TODO: Read from keepalive_pipe[0] */
     
     ext2_main (4, child_argv);
   } else {
     /* in parent, child is $pid */
 
-    /* close read pipe */
-    close (keepalive_pipe[0]);
+    /* close write pipe */
+    close (keepalive_pipe[1]);
 
     /* TODO: Wait for mount */
     sleep (200);
