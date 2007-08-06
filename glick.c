@@ -16,7 +16,6 @@ main (int argc, char *argv[])
   char filename[100]; /* enought for mount_dir + "/start" */
   int keepalive_pipe[2];
   pid_t pid;
-  char *child_argv[3];
   char **real_argv;
   int i;
 
@@ -54,6 +53,7 @@ main (int argc, char *argv[])
   }
   
   if (pid == 0) {
+    char *child_argv[5];
     /* in child */
 
     /* close write pipe */
@@ -61,11 +61,13 @@ main (int argc, char *argv[])
     
     child_argv[0] = "glick";
     child_argv[1] = mount_dir;
-    child_argv[2] = NULL;
+    child_argv[2] = "-o";
+    child_argv[3] = "ro";
+    child_argv[4] = NULL;
 
     /* TODO: Read from keepalive_pipe[0] */
     
-    ext2_main (2, child_argv);
+    ext2_main (4, child_argv);
   } else {
     /* in parent, child is $pid */
 
