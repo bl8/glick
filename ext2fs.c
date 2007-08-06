@@ -286,7 +286,7 @@ static struct fuse_lowlevel_ops ext2fs_ops = {
 };
 
 /* stock main() from FUSE example */
-int main(int argc, char *argv[])
+int ext2_main(int argc, char *argv[])
 {
 	struct fuse_args args = FUSE_ARGS_INIT(argc, argv);
 	struct fuse_chan *ch;
