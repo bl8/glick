@@ -111,8 +111,6 @@ main (int argc, char *argv[])
     /* Pause until mounted */
     read (keepalive_pipe[0], &c, 1);
     
-    //sleep (200);
-    
     strcpy (filename, mount_dir);
     strcat (filename, "/start");
 
