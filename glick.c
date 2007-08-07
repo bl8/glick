@@ -35,6 +35,10 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <string.h>
 #include <unistd.h>
 #include <pthread.h>
+#include <errno.h>
+
+#define PREFIX_SYMLINK "/tmp/glick_root"
+#define PREFIX_SYMLINK_VALUE "/proc/self/fd/1023"
 
 extern int ext2_main(int argc, char *argv[], void (*mounted) (void));
 extern void ext2_quit(void);
@@ -70,6 +74,36 @@ fuse_mounted (void)
     res = pthread_create(&thread, NULL, write_pipe_thread, keepalive_pipe);
 }
 
+void
+ensure_symlink (void)
+{
+  struct stat buf;
+  char link[32];
+  int res;
+  ssize_t link_size;
+  
+  res = lstat(PREFIX_SYMLINK, &buf);
+  if (res == 0) {
+    if (S_ISLNK (buf.st_mode)) {
+      link_size = readlink (PREFIX_SYMLINK, link, 32);
+      if (link_size == strlen (PREFIX_SYMLINK_VALUE) &&
+	  strncmp (link, PREFIX_SYMLINK_VALUE, link_size) == 0)
+	return;
+    }
+  } else {
+    if (errno == ENOENT) {
+      if (symlink (PREFIX_SYMLINK_VALUE, PREFIX_SYMLINK) == 0)
+	return;
+      fprintf (stderr, "Unable to create %s symlink\n", PREFIX_SYMLINK);
+      exit (1);
+    }
+  }
+  fprintf (stderr,
+	   "The file "PREFIX_SYMLINK" already exists and is not the correct symlink required.\n"
+	   "Please remove the file ("PREFIX_SYMLINK") and try again.\n");
+  exit (1);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -84,8 +118,7 @@ main (int argc, char *argv[])
     exit (1);
   }
 
-  /* TODO: Verify if already existing and right, and check error when creating it */
-  symlink("/proc/self/fd/1023", "/tmp/self_prefix");
+  ensure_symlink ();
 
   if (pipe (keepalive_pipe) == -1) {
     perror ("pipe error: ");

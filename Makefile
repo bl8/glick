@@ -12,7 +12,7 @@ test:	header.a mkglick.sh
 	./mkglick.sh test.ext2 test
 
 test.ext2: test.sh data.txt
-	dd if=/dev/zero of=test.ext2 bs=100k count=1
+	dd if=/dev/zero of=test.ext2 bs=60k count=1
 	/sbin/mke2fs test.ext2
 	mkdir lo_dir
 	mount -o loop test.ext2 lo_dir
