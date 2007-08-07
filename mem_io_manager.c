@@ -1,3 +1,30 @@
+/**************************************************************************
+
+Copyright © 2007 by Alexander Larsson
+
+All Rights Reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a
+copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sub license, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice (including the
+next paragraph) shall be included in all copies or substantial portions
+of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
+IN NO EVENT SHALL THE COPYRIGHT HOLDERS AND/OR THEIR SUPPLIERS BE LIABLE FOR
+ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+**************************************************************************/
 
 #define _LARGEFILE_SOURCE
 #define _LARGEFILE64_SOURCE
@@ -35,9 +62,6 @@
 
 struct mem_private_data {
 	int	magic;
-	int	dev;
-	int	flags;
-	int	access_time;
 	void   *data;
 	size_t  data_size;
 };
@@ -55,7 +79,7 @@ static errcode_t mem_set_option(io_channel channel, const char *option,
 
 static struct struct_io_manager struct_mem_manager = {
 	EXT2_ET_MAGIC_IO_MANAGER,
-	"Unix I/O Manager",
+	"Memory I/O Manager",
 	mem_open,
 	mem_close,
 	mem_set_blksize,
@@ -100,7 +124,6 @@ static errcode_t mem_open(const char *name, int flags, io_channel *channel)
 	io->read_error = 0;
 	io->write_error = 0;
 	io->refcount = 1;
-	
 
 	memset(data, 0, sizeof(struct mem_private_data));
 	data->magic = EXT2_ET_MAGIC_MEM_IO_CHANNEL;
