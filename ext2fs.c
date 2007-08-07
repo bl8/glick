@@ -1,4 +1,6 @@
 
+/* based on fuse-ext2 by Jeff Garzik <jgarzik@pobox.com>
+   This code is GPL */
 #define FUSE_USE_VERSION 26
 
 #include <fuse_lowlevel.h>
