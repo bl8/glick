@@ -46,7 +46,7 @@ int
 main (int argc, char *argv[])
 {
   int dir_fd, res;
-  char mount_dir[] = "/tmp/glick_XXXXXX";
+  char mount_dir[] = "/tmp/.glick_XXXXXX";
   char filename[100]; /* enought for mount_dir + "/start" */
   pid_t pid;
   char **real_argv;
