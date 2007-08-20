@@ -21,7 +21,6 @@ bundles can be downloaded as one file and ran without needing to be installed.
 %setup -q -n glick-%{version}
 
 %build
-%configure
 make  %{?_smp_mflags}
 
 %install
@@ -34,8 +33,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc
-
+%doc README
+%{_bindir}/*
+%{_libdir}/glick
 
 %changelog
 * Mon Aug 20 2007 Alexander Larsson <alexl@redhat.com> - 0.1-1
