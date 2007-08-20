@@ -5,6 +5,11 @@ LIBDIR=${PREFIX}/lib
 BINDIR=${PREFIX}/bin
 CFLAGS=-O2 -Wall -g
 
+VERSION=0.1
+
+glick.spec: glick.spec.in
+	sed s/\@VERSION\@/${VERSION}/ glick.spec.in > glick.spec 
+
 install: header.a glick-shell mkglick glick-mkext2
 	mkdir -p ${LIBDIR}/glick/
 	install header.a ${LIBDIR}/glick/
