@@ -48,7 +48,9 @@ fi
 # Dynamic ext2fs
 EXT2FS_LIB=`pkg-config --libs ext2fs`
 # Static ext2fs
-EXT2FS_LIB="/usr/lib/libext2fs.a /usr/lib/libcom_err.a" 
-gcc header.a $OBJS $EXT2FS_LIB `pkg-config --libs fuse` -o $GLICK_FILE
+EXT2FS_LIB="/usr/lib/libext2fs.a /usr/lib/libcom_err.a"
+# This line is replaced on make install:
+LIBDIR=.
+gcc $LIBDIR/header.a $OBJS $EXT2FS_LIB `pkg-config --libs fuse` -o $GLICK_FILE
 rm -rf $DIR
 strip $GLICK_FILE
