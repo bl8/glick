@@ -9,7 +9,8 @@ DIR=$2
 # Some distros have mke2fs etc in /sbin
 export PATH=/sbin:/usr/sbin:$PATH
 
-DIR_SIZE=`du -D -s -B 1024 images/ | sed "s/\t.*//"`
+DIR_SIZE=`du -D -s -B 1024 $DIR | sed "s/\t.*//"`
+if [ $DIR_SIZE -lt 60 ]; then DIR_SIZE=60; fi
 
 # Make initial size 30% larger
 
@@ -20,7 +21,7 @@ dd if=/dev/zero of=$EXT2_FILE bs=1k count=$EXTRA_SIZE &> /dev/null
 mke2fs -b 1024 -F $EXT2_FILE &> /dev/null
 tune2fs -c 0 -i 0 $EXT2_FILE &> /dev/null
 
-if ! mount -o loop $EXT2_FILE $MOUNT_PATH; then
+if ! mount -o loop -t ext2 $EXT2_FILE $MOUNT_PATH; then
  echo "ERROR: Unable to mount as loopback, you need to be root to run this"
  rm -f $EXT2_FILE
  exit 1
