@@ -13,7 +13,7 @@ header.a: ext2fs.c mem_io_manager.c glick.c
 clean:
 	rm -f header.a *.o test test.ext2 glick-shell
 
-test:	header.a mkglick test.ext2
+test:	header.a mkglick test.ext2 test-icon.png test.desktop
 	./mkglick test test.ext2 --icon test-icon.png --desktop-file test.desktop
 
 test.ext2: test.sh data.txt
