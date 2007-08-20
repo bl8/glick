@@ -1,4 +1,4 @@
-all: test
+all: glick-shell header.a
 
 CFLAGS=-O -Wall -g
 
@@ -11,7 +11,7 @@ header.a: ext2fs.c mem_io_manager.c glick.c
 	ar r header.a ext2fs.o mem_io_manager.o glick.o
 
 clean:
-	rm header.a *.o test
+	rm -f header.a *.o test glick-shell
 
 test:	header.a mkglick.sh
 	./mkglick.sh test.ext2 test
