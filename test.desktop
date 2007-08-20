@@ -1,0 +1,10 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Test glick
+Comment=A simple test of glick functionallity
+Exec=start
+Terminal=false
+Type=Application
+StartupNotify=true
+MimeType=text/plain;
+Categories=Test;
