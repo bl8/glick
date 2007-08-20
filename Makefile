@@ -13,6 +13,7 @@ HEADER_SOURCES=ext2fs.c mem_io_manager.c glick.c
 dist:	glick.spec
 	rm -rf glick-${VERSION}
 	mkdir glick-${VERSION}
+	cp README AUTHORS glick-${VERSION}
 	cp Makefile glick-${VERSION}
 	cp ${TEST_FILES} glick-${VERSION}
 	cp glick-shell.c ${HEADER_SOURCES} glick-${VERSION}
