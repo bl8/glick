@@ -17,12 +17,10 @@ test:	header.a mkglick.sh
 	./mkglick.sh test.ext2 test
 
 test.ext2: test.sh data.txt
-	dd if=/dev/zero of=test.ext2 bs=60k count=1
-	/sbin/mke2fs test.ext2
-	mkdir lo_dir
-	mount -o loop test.ext2 lo_dir
-	cp test.sh lo_dir
-	cp data.txt lo_dir
-	ln -s test.sh lo_dir/start
-	umount lo_dir
-	rm -rf lo_dir
+	rm -rf test_ext2_dir
+	mkdir test_ext2_dir
+	cp test.sh test_ext2_dir
+	cp data.txt test_ext2_dir
+	ln -s test.sh test_ext2_dir/start
+	./glick-mkext2 test.ext2 test_ext2_dir
+	rm -rf test_ext2_dir
