@@ -1,4 +1,4 @@
 #!/bin/sh
 echo "arg is $1"
 echo "file data:"
-cat /tmp/glick_root/data.txt
+cat /proc/self/fd/1023/data.txt
