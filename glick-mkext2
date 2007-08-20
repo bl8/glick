@@ -22,6 +22,7 @@ tune2fs -c 0 -i 0 $EXT2_FILE &> /dev/null
 
 if ! mount -o loop $EXT2_FILE $MOUNT_PATH; then
  echo "ERROR: Unable to mount as loopback, you need to be root to run this"
+ rm -f $EXT2_FILE
  exit 1
 fi
     
