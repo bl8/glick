@@ -1,7 +1,12 @@
 all: test
 
+CFLAGS=-O -Wall -g
+
+glick-shell: glick-shell.c
+	gcc ${CFLAGS} -o glick-shell glick-shell.c
+
 header.a: ext2fs.c mem_io_manager.c glick.c
-	gcc -c -O -Wall ext2fs.c mem_io_manager.c glick.c `pkg-config --cflags fuse ext2fs`
+	gcc -c ${CFLAGS} ext2fs.c mem_io_manager.c glick.c `pkg-config --cflags fuse ext2fs`
 	rm -f header.a
 	ar r header.a ext2fs.o mem_io_manager.o glick.o
 
