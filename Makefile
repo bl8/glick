@@ -14,7 +14,7 @@ clean:
 	rm -f header.a *.o test test.ext2 glick-shell
 
 test:	header.a mkglick test.ext2
-	./mkglick test.ext2 test
+	./mkglick test test.ext2 
 
 test.ext2: test.sh data.txt
 	rm -rf test_ext2_dir
