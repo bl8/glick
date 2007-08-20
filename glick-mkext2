@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ $# != 2 ]; then
-  echo "Usage: glick-mkext2 <directory> <ext2 image name>"
+  echo "Usage: glick-mkext2 <ext2 image name> <directory>"
   exit 1
 fi
 EXT2_FILE=$1
@@ -25,10 +25,11 @@ if ! mount -o loop $EXT2_FILE $MOUNT_PATH; then
  exit 1
 fi
     
-(cd $DIR; find . -depth -print0 | cpio -o -0)  &> /dev/null | (cd $MOUNT_PATH ; cpio -i -d) &> /dev/null
+((cd $DIR; find . -depth -print0 | cpio -o -0) | (cd $MOUNT_PATH ; cpio -i -d)) &> /dev/null
 
 sync
 umount $MOUNT_PATH
+rm -rf $MOUNT_PATH
 
 # Try to minimize size, using resize2fs with a binary search
 
