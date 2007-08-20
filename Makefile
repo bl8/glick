@@ -11,10 +11,10 @@ header.a: ext2fs.c mem_io_manager.c glick.c
 	ar r header.a ext2fs.o mem_io_manager.o glick.o
 
 clean:
-	rm -f header.a *.o test glick-shell
+	rm -f header.a *.o test test.ext2 glick-shell
 
-test:	header.a mkglick.sh test.ext2
-	./mkglick.sh test.ext2 test
+test:	header.a mkglick test.ext2
+	./mkglick test.ext2 test
 
 test.ext2: test.sh data.txt
 	rm -rf test_ext2_dir
