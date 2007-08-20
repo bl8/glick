@@ -3,8 +3,8 @@ if [ $# != 2 ]; then
   echo "Usage: glick-mkext2 <directory> <ext2 image name>"
   exit 1
 fi
-DIR=$1
-EXT2_FILE=$2
+EXT2_FILE=$1
+DIR=$2
 
 # Some distros have mke2fs etc in /sbin
 export PATH=/sbin:/usr/sbin:$PATH
