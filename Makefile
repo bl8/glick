@@ -1,6 +1,18 @@
 all: glick-shell header.a
 
-CFLAGS=-O -Wall -g
+PREFIX=/usr
+LIBDIR=${PREFIX}/lib
+BINDIR=${PREFIX}/bin
+CFLAGS=-O2 -Wall -g
+
+install: header.a glick-shell mkglick glick-mkext2
+	mkdir -p ${LIBDIR}/glick/
+	install header.a ${LIBDIR}/glick/
+
+	mkdir -p ${BINDIR}/
+	install glick-shell glick-mkext2 ${BINDIR}/
+	sed s#LIBDIR=.#LIBDIR=${LIBDIR}/glick# mkglick > ${BINDIR}/mkglick
+	chmod a+x ${BINDIR}/mkglick
 
 glick-shell: glick-shell.c
 	gcc ${CFLAGS} -o glick-shell glick-shell.c
