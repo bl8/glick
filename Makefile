@@ -1,5 +1,6 @@
 all: glick-shell header.a glick.spec
 
+DESTDIR=
 PREFIX=/usr
 LIBDIR=${PREFIX}/lib
 BINDIR=${PREFIX}/bin
@@ -27,13 +28,13 @@ glick.spec: glick.spec.in
 	sed s/\@VERSION\@/${VERSION}/ glick.spec.in > glick.spec 
 
 install: header.a glick-shell mkglick glick-mkext2
-	mkdir -p ${LIBDIR}/glick/
-	install header.a ${LIBDIR}/glick/
+	mkdir -p ${DESTDIR}${LIBDIR}/glick/
+	install header.a ${DESTDIR}${LIBDIR}/glick/
 
-	mkdir -p ${BINDIR}/
-	install glick-shell glick-mkext2 glick-extract ${BINDIR}/
-	sed s#LIBDIR=.#LIBDIR=${LIBDIR}/glick# mkglick > ${BINDIR}/mkglick
-	chmod a+x ${BINDIR}/mkglick
+	mkdir -p ${DESTDIR}${BINDIR}/
+	install glick-shell glick-mkext2 glick-extract ${DESTDIR}${BINDIR}/
+	sed s#LIBDIR=.#LIBDIR=${LIBDIR}/glick# mkglick > ${DESTDIR}${BINDIR}/mkglick
+	chmod a+x ${DESTDIR}${BINDIR}/mkglick
 
 glick-shell: glick-shell.c
 	gcc ${CFLAGS} -o glick-shell glick-shell.c

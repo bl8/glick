@@ -25,7 +25,7 @@ make  %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install LIBDIR=$RPM_BUILD_ROOT%{_libdir} BINDIR=$RPM_BUILD_ROOT%{_bindir}
+make install DESTDIR=$RPM_BUILD_ROOT LIBDIR=%{_libdir} BINDIR=%{_bindir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
