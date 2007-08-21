@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ $# -lt 2 ]; then
-  echo "Usage: mkglick <glick file> <ext2 image name> [--icon file] [--desktop-file desktop-file]"
+  echo "Usage: mkglick <glick file> <ext2 image name> [--icon 48x48_icon.png] [--desktop-file desktop-file]"
   exit 1
 fi
 GLICK_FILE=$1
