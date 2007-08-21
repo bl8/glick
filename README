@@ -96,9 +96,6 @@ distributions. One possible approach would be to select a specific LSB
 version and include all libraries you use that is not in that version
 of the LSB.
 
-GENERAL COMMENTS
-================
-
 Glick is not meant to replace distribution packaging system in
 general. There are many reasons why distro packages can be better than
 glick bundles, and there are limits to what a glick bundle can do (for
@@ -106,6 +103,9 @@ instance, it can't really extend the system). However, there are many
 cases where glick bundles are very useful, as a compliment to
 distribution packages. Such as shipping experimental code, or
 unpackaged applications for easy testing.
+
+EXTRACTING DATA
+===============
 
 Its easy to extract the various parts of a glick file, as they are
 each stored in their own elf section. Glick ships with the tool
@@ -116,3 +116,24 @@ The sections used for the data is:
     ".glick.image" - the filesystem image
     ".xdg.icon.48" - A 48x48 icon in PNG format
     ".xdg.desktop" - A xdg desktop file that describes the app
+
+LICENSING
+=========
+
+The core glick code has a BSD-style license, but it uses e2fsprogs to
+implement the ext2 filesystem reading, which is licensed under the
+GPLv2. This means the result is licensed under the GPL v2.
+
+However, I belive that using mkglick to create a glick bundle
+containing code that is not GPL licensed (e.g. proprietarty code) and
+then distributing that is ok. This is very similar to shipping an iso
+image with both proprietary and GPL code on it, which is ok due to
+this part of the GPL:
+     
+     In addition, mere aggregation of another work not based on the
+     Program with the Program (or with a work based on the Program) on
+     a volume of a storage or distribution medium does not bring the
+     other work under the scope of this License.
+
+I've verified this with several people, but as always, I'm not a
+lawyer, so if you're unsure get your own legal advice.     
