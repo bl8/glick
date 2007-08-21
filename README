@@ -107,3 +107,12 @@ cases where glick bundles are very useful, as a compliment to
 distribution packages. Such as shipping experimental code, or
 unpackaged applications for easy testing.
 
+Its easy to extract the various parts of a glick file, as they are
+each stored in their own elf section. Glick ships with the tool
+glick-extract that can do this, but it is also easy for other tools to
+read this data out without relying on glick being installed.
+
+The sections used for the data is:
+    ".glick.image" - the filesystem image
+    ".xdg.icon.48" - A 48x48 icon in PNG format
+    ".xdg.desktop" - A xdg desktop file that describes the app
