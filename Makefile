@@ -31,7 +31,7 @@ install: header.a glick-shell mkglick glick-mkext2
 	install header.a ${LIBDIR}/glick/
 
 	mkdir -p ${BINDIR}/
-	install glick-shell glick-mkext2 ${BINDIR}/
+	install glick-shell glick-mkext2 glick-extract ${BINDIR}/
 	sed s#LIBDIR=.#LIBDIR=${LIBDIR}/glick# mkglick > ${BINDIR}/mkglick
 	chmod a+x ${BINDIR}/mkglick
 
