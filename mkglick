@@ -28,7 +28,7 @@ DIR=`mktemp -d`
 
 cp $EXT2_IMAGE $DIR/image
 (cd $DIR; ld -r -b binary -o image.o image)
-objcopy --rename-section .data=.rodata,alloc,load,readonly,data,cont $DIR/image.o
+objcopy --rename-section .data=.glick.image,alloc,load,readonly,data,cont $DIR/image.o
 OBJS="$DIR/image.o"
 
 if [ x$ICON != x ]; then
