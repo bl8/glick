@@ -24,6 +24,9 @@ application bundles:
   file. These are stored as separate ELF sections and are very easy to
   extract.
 
+You can find news about glick and new releases at:
+http://www.gnome.org/~alexl/glick/
+  
 BUILDING AND INSTALLATION
 =========================
 
