@@ -23,6 +23,30 @@ application bundles:
 * You can embed icons and desktop files into the target program
   file. These are stored as separate ELF sections and are very easy to
   extract.
+
+BUILDING AND INSTALLATION
+=========================
+
+To build glick you need to install these required libraries:
+ fuse >= 2.6.0
+ e2fsprogs
+
+Then just run
+
+  make
+  
+to build the program, and
+
+  make install
+  
+to install it in /usr. If you want to install it somewhere else
+you can use either:
+
+  make PREFIX=/foo install
+  
+or
+
+  make LIBDIR=/foo/lib BINDIR=/foo/bin install
   
 HOW TO CREATE A GLICK BUNDLE:
 =============================
