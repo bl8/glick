@@ -1,0 +1,21 @@
+#!/bin/sh
+if [ $# != 3 ]; then
+  echo "Usage: glick-extract [--image | --icon | --desktop-file ] <glick file> <target file>"
+  exit 1
+fi
+
+case $1 in
+    "--image")
+	objcopy -j .glick.image -O binary $2 $3
+	;;
+    "--icon")
+	objcopy -j .xdg.icon.48 -O binary  --set-section-flags .xdg.icon.48= $2 $3
+	;;
+    "--desktop-file")
+	objcopy -j .xdg.desktop -O binary  --set-section-flags .xdg.desktop= $2 $3
+	;;
+    *)
+	echo "Unsupported argument $1"
+	;;
+esac     
+	

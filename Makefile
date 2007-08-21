@@ -17,7 +17,7 @@ dist:	glick.spec
 	cp Makefile glick-${VERSION}
 	cp ${TEST_FILES} glick-${VERSION}
 	cp glick-shell.c ${HEADER_SOURCES} glick-${VERSION}
-	cp mkglick glick-mkext2 glick-${VERSION}
+	cp mkglick glick-mkext2 glick-extract glick-${VERSION}
 	cp test-icon.png test.desktop glick-${VERSION}
 	cp glick.spec glick.spec.in glick-${VERSION}
 	tar czvf glick-${VERSION}.tar.gz glick-${VERSION}
