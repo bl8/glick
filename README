@@ -77,7 +77,7 @@ like this:
  started. If its a script it can do things like set up env vars (like
  LD_LIBRARY_PATH) before starting the actual application.
 
-5. Create a filesystem: glick-mkext2 /tmp/a_work_dir /tmp/image.ext2 
+5. Create a filesystem: glick-mkext2 /tmp/image.ext2 /tmp/a_work_dir 
  This creates a minimal ext2 filesystem image from the files in your
  work directory. Due to it using loopback mounts you must run this as
  root.
