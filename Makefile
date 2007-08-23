@@ -44,6 +44,13 @@ header.a: ${HEADER_SOURCES}
 	rm -f header.a
 	ar r header.a ext2fs.o mem_io_manager.o glick.o
 
+test-ext2: test-ext2.c ext2fs.c mem_io_manager.c
+	cp test.ext2 image
+	ld -r -b binary -o test_image.o image
+	rm image
+	objcopy --rename-section .data=.glick.image,alloc,load,readonly,data,cont test_image.o
+	gcc -o test-ext2 ${CFLAGS} test_image.o test-ext2.c mem_io_manager.c ext2fs.c `pkg-config --cflags --libs fuse ext2fs`
+
 clean:
 	rm -f header.a *.o test test.ext2 glick-shell
 
