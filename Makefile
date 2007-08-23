@@ -16,7 +16,7 @@ dist:	glick.spec
 	mkdir glick-${VERSION}
 	cp README AUTHORS COPYING glick-${VERSION}
 	cp Makefile glick-${VERSION}
-	cp ${TEST_FILES} glick-${VERSION}
+	cp ${TEST_FILES} test-ext2.c glick-${VERSION}
 	cp glick-shell.c ${HEADER_SOURCES} glick-${VERSION}
 	cp mkglick glick-mkext2 glick-extract glick-${VERSION}
 	cp test-icon.png test.desktop glick-${VERSION}
