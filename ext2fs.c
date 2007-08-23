@@ -253,6 +253,8 @@ static void op_release(fuse_req_t req, fuse_ino_t ino,
 	rc = ext2fs_file_close(efile);
 	if (rc)
 		fuse_reply_err(req, EIO);
+	else
+		fuse_reply_err(req, 0);
 }
 
 static int walk_dir(struct ext2_dir_entry *de_1, int   offset, int blocksize,
