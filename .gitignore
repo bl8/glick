@@ -4,4 +4,5 @@ test
 *.ext2
 *~
 glick-shell
+test-ext2
 glick.spec
