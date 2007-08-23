@@ -6,7 +6,7 @@ LIBDIR=${PREFIX}/lib
 BINDIR=${PREFIX}/bin
 CFLAGS=-O2 -Wall -g
 
-VERSION=0.1
+VERSION=0.2
 
 TEST_FILES=test.sh data.txt
 HEADER_SOURCES=ext2fs.c mem_io_manager.c glick.c
