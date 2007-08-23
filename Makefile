@@ -52,7 +52,7 @@ test-ext2: test-ext2.c ext2fs.c mem_io_manager.c test.ext2
 	gcc -o test-ext2 ${CFLAGS} test_image.o test-ext2.c mem_io_manager.c ext2fs.c `pkg-config --cflags --libs fuse ext2fs`
 
 clean:
-	rm -f header.a *.o test test.ext2 glick-shell
+	rm -f header.a *.o test test.ext2 glick-shell test-ext2
 
 test:	header.a mkglick test.ext2 test-icon.png test.desktop
 	./mkglick test test.ext2 --icon test-icon.png --desktop-file test.desktop
