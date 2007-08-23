@@ -1,0 +1,4 @@
+Major changes in 0.2 are:
+* Fix a problem in the fuse filesystem that only allowed you to open
+  10 files.
+* Fix argument order in the README example  
