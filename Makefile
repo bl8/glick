@@ -44,7 +44,7 @@ header.a: ${HEADER_SOURCES}
 	rm -f header.a
 	ar r header.a ext2fs.o mem_io_manager.o glick.o
 
-test-ext2: test-ext2.c ext2fs.c mem_io_manager.c
+test-ext2: test-ext2.c ext2fs.c mem_io_manager.c test.ext2
 	cp test.ext2 image
 	ld -r -b binary -o test_image.o image
 	rm image
