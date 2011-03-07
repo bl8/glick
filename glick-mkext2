@@ -20,7 +20,6 @@ MOUNT_PATH=`mktemp -d`
 dd if=/dev/zero of=$EXT2_FILE bs=1k count=$EXTRA_SIZE > /dev/null 2>&1
 mke2fs -b 1024 -F $EXT2_FILE > /dev/null 2>&1
 tune2fs -c 0 -i 0 $EXT2_FILE > /dev/null 2>&1
-e2fsck -f $EXT2_FILE > /dev/null 2>&1
 
 if ! mount -o loop -t ext2 $EXT2_FILE $MOUNT_PATH; then
  echo "ERROR: Unable to mount as loopback, you need to be root to run this"
@@ -33,6 +32,8 @@ fi
 sync
 umount $MOUNT_PATH
 rm -rf $MOUNT_PATH
+
+e2fsck -f $EXT2_FILE > /dev/null 2>&1
 
 # Try to minimize size, using resize2fs with a binary search
 
