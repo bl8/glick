@@ -45,12 +45,12 @@ if [ x$DESKTOP_FILE != x ]; then
     OBJS="$OBJS $DIR/desktop_file.o"
 fi
 
-# Dynamic ext2fs
-EXT2FS_LIB=`pkg-config --libs ext2fs`
 # Static ext2fs
 EXT2FS_LIB="/usr/lib/libext2fs.a /usr/lib/libcom_err.a"
+# Static libfuse
+FUSE_LIB="/usr/lib/libfuse.a -pthread -lrt -ldl"
 # This line is replaced on make install:
 LIBDIR=.
-gcc $LIBDIR/header.a $OBJS $EXT2FS_LIB `pkg-config --libs fuse` -o $GLICK_FILE
+gcc $LIBDIR/header.a $OBJS $EXT2FS_LIB $FUSE_LIB -o $GLICK_FILE
 rm -rf $DIR
 strip $GLICK_FILE
