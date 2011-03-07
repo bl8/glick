@@ -17,9 +17,9 @@ if [ $DIR_SIZE -lt 60 ]; then DIR_SIZE=60; fi
 EXTRA_SIZE=$(( $DIR_SIZE * 130 / 100 ))
 MOUNT_PATH=`mktemp -d`
 
-dd if=/dev/zero of=$EXT2_FILE bs=1k count=$EXTRA_SIZE &> /dev/null
-mke2fs -b 1024 -F $EXT2_FILE &> /dev/null
-tune2fs -c 0 -i 0 $EXT2_FILE &> /dev/null
+dd if=/dev/zero of=$EXT2_FILE bs=1k count=$EXTRA_SIZE > /dev/null 2>&1
+mke2fs -b 1024 -F $EXT2_FILE > /dev/null 2>&1
+tune2fs -c 0 -i 0 $EXT2_FILE > /dev/null 2>&1
 
 if ! mount -o loop -t ext2 $EXT2_FILE $MOUNT_PATH; then
  echo "ERROR: Unable to mount as loopback, you need to be root to run this"
@@ -27,7 +27,7 @@ if ! mount -o loop -t ext2 $EXT2_FILE $MOUNT_PATH; then
  exit 1
 fi
     
-((cd $DIR; find . -depth -print0 | cpio -o -0) | (cd $MOUNT_PATH ; cpio -i -d)) &> /dev/null
+((cd $DIR; find . -depth -print0 | cpio -o -0) | (cd $MOUNT_PATH ; cpio -i -d)) > /dev/null 2>&1
 
 sync
 umount $MOUNT_PATH
@@ -40,7 +40,7 @@ MAX=$EXTRA_SIZE
 CURRENT=$EXTRA_SIZE
 NEW_SIZE=$(( ($CURRENT + $MIN) / 2 ))
 while [ $(( $CURRENT - $NEW_SIZE )) -ge  2 ]; do
-    if resize2fs $EXT2_FILE $NEW_SIZE &> /dev/null; then
+    if resize2fs $EXT2_FILE $NEW_SIZE > /dev/null 2>&1; then
 	CURRENT=$NEW_SIZE
     else
 	MIN=$NEW_SIZE
